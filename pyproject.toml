@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "fastapi-ref"
+version = "0.1.0"
+description = ""
+authors = ["IlyaGrebenschikov  <ilushagr22@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = {extras = ["all"], version = "^0.109.2"}
+pydantic-settings = "^2.1.0"
+sqlalchemy = {extras = ["all"], version = "^2.0.26"}
+fastapi-cache = "^0.1.0"
+redis = "^5.0.1"
+fastapi-cache2 = "^0.2.1"
+asyncpg = "^0.29.0"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+fastapi-users = {extras = ["oauth", "sqlalchemy"], version = "^12.1.3"}
+pyjwt = "^2.8.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
