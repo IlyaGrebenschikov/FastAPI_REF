@@ -5,6 +5,7 @@ from src.database import init_db
 from src.database import init_redis
 
 from src.api.user import user_router
+from src.api.auth import auth_router
 
 
 @asynccontextmanager
@@ -19,3 +20,4 @@ app = FastAPI(
     lifespan=lifespan
 )
 app.include_router(user_router)
+app.include_router(auth_router)

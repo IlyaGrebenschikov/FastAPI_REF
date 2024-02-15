@@ -1,5 +1,7 @@
 from fastapi import APIRouter
 from fastapi import Depends
+from fastapi.security import OAuth2PasswordRequestForm
+from typing import Annotated
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from fastapi_cache.decorator import cache
@@ -23,5 +25,5 @@ async def create_user(data: UserSchemas = None, db: AsyncSession = Depends(get_s
 
 @router.get('/get')
 @cache(expire=30)
-async def get_user(user_id: int, db: AsyncSession = Depends(get_session)):
-    return await UserServices.get_user(user_id, db)
+async def get_user(username: str, email: str, password: str, db: AsyncSession = Depends(get_session)):
+    return await UserServices.get_user(username, email, password, db)

@@ -1,7 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from fastapi import HTTPException
+from fastapi import Depends
+from fastapi.security import OAuth2PasswordRequestForm
 
-from typing import Optional
+from typing import Annotated
 
 from src.api.user import UserModels
 from src.api.user import UserSchemas
@@ -21,6 +24,17 @@ class UserServices:
         return user
 
     @staticmethod
-    async def get_user(user_id: int, db: AsyncSession):
-        user = await db.get(UserModels, user_id)
+    async def get_user(username: str, email: str, password: str, db: AsyncSession):
+        stmt = (
+            select(UserModels).
+            filter(UserModels.name == username, UserModels.email == email)
+        )
+        result = await db.execute(stmt)
+        user = result.scalar()
+
+        is_password_correct = pwd_context.verify(password, user.hashed_password)
+
+        if not is_password_correct:
+            raise HTTPException(status_code=400, detail="Incorrect username or password")
+
         return user
