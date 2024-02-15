@@ -6,9 +6,9 @@ from pydantic import field_validator
 class User(BaseModel):
     name: str
     email: EmailStr
-    password: str
+    hashed_password: str
 
-    @field_validator("password")
+    @field_validator("hashed_password")
     def check_password(cls, value):
         value = str(value)
         if len(value) < 8:
