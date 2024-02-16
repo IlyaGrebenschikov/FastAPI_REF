@@ -1,6 +1,7 @@
 import jwt
 from datetime import datetime, timedelta
 from src.core import get_settings
+from functools import lru_cache
 
 
 class Auth:
@@ -25,5 +26,6 @@ class Auth:
             return None
 
 
+@lru_cache(typed=True)
 def get_auth_settings() -> Auth:
     return Auth()
