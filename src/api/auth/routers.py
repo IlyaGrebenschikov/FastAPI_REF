@@ -21,8 +21,7 @@ router = APIRouter(
 
 @router.post('/token', response_model=Token)
 async def create_token(
-        form_data: Annotated[OAuth2PasswordRequestForm, Depends(oauth2_scheme)],
-        email: str,
+        form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
         db: AsyncSession = Depends(get_session)
 ):
-    return await authenticate_user(form_data, email, db)
+    return await authenticate_user(form_data, db)
