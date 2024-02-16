@@ -18,7 +18,6 @@ async def get_current_user(token: str, password: str, db: AsyncSession):
     )
     try:
         payload = get_auth_settings().verify_jwt_token(token)
-        return payload, token
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception

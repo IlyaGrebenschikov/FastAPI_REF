@@ -1,3 +1,4 @@
+import secrets
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import DirectoryPath
 from functools import lru_cache
@@ -23,6 +24,12 @@ class EnvSettings(BaseSettings):
     REDIS_HOST: str
     REDIS_PORT: int
     REDIS_URL: str
+
+
+class SecretSettings:
+
+    secret_key: str = secrets.token_hex(32)
+    secret_algh: str = 'HS256'
 
 
 class DbSettings(EnvSettings):
@@ -64,6 +71,7 @@ class Settings:
     env: EnvSettings = EnvSettings()
     db: DbSettings = DbSettings()
     redis: RedisSettings = RedisSettings()
+    secret: SecretSettings = SecretSettings()
 
 
 @lru_cache(typed=True)
