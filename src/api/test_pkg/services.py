@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from fastapi import status
 
 from src.security import get_auth_settings
-from src.api.auth.models import TokenData
+from src.api.auth.schemas import TokenData
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -18,13 +18,13 @@ async def get_current_user(token: str, password: str, db: AsyncSession):
     )
     try:
         payload = get_auth_settings().verify_jwt_token(token)
-        username: str = payload.get("sub")
-        if username is None:
+        email: str = payload.get("sub")
+        if email is None:
             raise credentials_exception
-        token_data = TokenData(username=username)
+        token_data = TokenData(email=email)
     except JWTError:
         raise credentials_exception
-    user = await UserServices.get_user(token_data.username, password, db)
+    user = await UserServices.get_user_email(token_data.email, password, db)
     if user is None:
         raise credentials_exception
     return user

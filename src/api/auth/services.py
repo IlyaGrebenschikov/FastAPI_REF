@@ -11,7 +11,7 @@ from src.api.user import UserServices
 
 
 async def authenticate_user(form_data: OAuth2PasswordRequestForm, db: AsyncSession):
-    user = await UserServices.get_user(form_data.username, form_data.password, db)
+    user = await UserServices.get_user_username(form_data.username, form_data.password, db)
 
     if not user:
         raise HTTPException(
@@ -22,6 +22,6 @@ async def authenticate_user(form_data: OAuth2PasswordRequestForm, db: AsyncSessi
     is_password_correct = verify_password(form_data.password, user.hashed_password)
     if not is_password_correct:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
-    jwt_token = get_auth_settings().create_jwt_token({"sub": user.name, "scopes": form_data.scopes})
+    jwt_token = get_auth_settings().create_jwt_token({"sub": user.email, "scopes": form_data.scopes})
 
     return {"access_token": jwt_token, "token_type": "bearer"}

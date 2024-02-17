@@ -52,3 +52,15 @@ class UserRepo:
         user = result.scalar()
 
         return user
+
+
+    async def try_get_user_by_email(self, email: str, db: AsyncSession) -> Optional[UserModels]:
+        stmt = (
+            select(UserModels).
+            filter(UserModels.email == email)
+        )
+
+        result = await db.execute(stmt)
+        user = result.scalar()
+
+        return user

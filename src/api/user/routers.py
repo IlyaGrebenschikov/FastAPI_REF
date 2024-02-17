@@ -26,4 +26,4 @@ async def create_user(data: UserSchemas = None, db: AsyncSession = Depends(get_s
 @router.get('/get')
 @cache(expire=30)
 async def get_user(username: str, password: str, db: AsyncSession = Depends(get_session)):
-    return await UserServices.get_user(username, password, db)
+    return await UserServices.get_user_username(username, password, db)
