@@ -18,12 +18,15 @@ from src.security import get_password_hash
 class UserServices:
     @staticmethod
     async def create_user(data: UserSchemas, db: AsyncSession):
-        user = UserModels(**data.model_dump())
-        user.hashed_password = get_password_hash(user.hashed_password)
-        db.add(user)
-        await db.commit()
-        await db.refresh(user)
-        return user
+        try:
+            user = UserModels(**data.model_dump())
+            user.hashed_password = get_password_hash(user.hashed_password)
+            db.add(user)
+            await db.commit()
+            await db.refresh(user)
+            return user
+        except Exception:
+            raise HTTPException(status_code=400, detail='User already exists')
 
     @staticmethod
     async def get_user(username: str, password: str, db: AsyncSession):
