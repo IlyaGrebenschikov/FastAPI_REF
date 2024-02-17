@@ -2,13 +2,16 @@ from pydantic import BaseModel
 from pydantic import EmailStr
 from pydantic import field_validator
 
+from typing import Optional
+
 
 class User(BaseModel):
     name: str
     email: EmailStr
-    hashed_password: str
+    password: str
+    referred_by: Optional[str]
 
-    @field_validator("hashed_password")
+    @field_validator("password")
     def check_password(cls, value):
         value = str(value)
         if len(value) < 8:
@@ -22,6 +25,9 @@ class User(BaseModel):
         return value
 
 
-if __name__ == '__main__':
-    user = User(name='Ilya', email='ilushagr22@mail.com', password='Qwaszxedcrtfgv1')
-    print(user)
+class UserInDB(BaseModel):
+    name: str
+    email: str
+    hashed_password: str
+    referrer: Optional[str]
+    referred_by: Optional[str]

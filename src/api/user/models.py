@@ -11,4 +11,5 @@ class User(Base):
     name: Mapped[str] = mapped_column(nullable=False)
     email: Mapped[str] = mapped_column(nullable=False, unique=True)
     hashed_password: Mapped[str] = mapped_column(nullable=False)
-    is_active: Mapped[bool] = mapped_column(default=False, nullable=False)
+    referrer: Mapped[str] = mapped_column(nullable=True)
+    referred_by: Mapped[str] = mapped_column(nullable=True)
