@@ -11,7 +11,7 @@ from src.security import get_password_hash
 
 class UserRepo:
 
-    async def try_create_user(self, data: UserSchemas, db: AsyncSession) -> Optional[dict]:
+    async def try_create_user(self, data: UserSchemas, db: AsyncSession) -> Optional[UserModels]:
         convert = UserSchemasInDB(
             name=data.name,
             email=data.email,

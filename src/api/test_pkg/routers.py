@@ -16,5 +16,5 @@ router = APIRouter(
 
 
 @router.get('/first')
-async def first(token: Annotated[str, Depends(oauth2_scheme)], password: str, db: AsyncSession = Depends(get_session)):
-    return await get_current_user(token, password, db)
+async def first(token: Annotated[str, Depends(oauth2_scheme)], db: AsyncSession = Depends(get_session)):
+    return await get_current_user(token, db)

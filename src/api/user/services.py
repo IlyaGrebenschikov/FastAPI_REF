@@ -40,13 +40,11 @@ class UserServices:
         return user
 
     @staticmethod
-    async def get_user_email(email: str, password: str, db: AsyncSession):
+    async def get_user_email(email: str, db: AsyncSession):
         exc = HTTPException(status_code=400, detail="Incorrect email or password")
         user_repo = UserRepo()
         user = await user_repo.try_get_user_by_email(email, db)
         if not user:
             raise exc
-        is_password_correct = verify_password(password, user.hashed_password)
-        if not is_password_correct:
-            raise exc
+
         return user
