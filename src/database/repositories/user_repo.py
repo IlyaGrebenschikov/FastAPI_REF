@@ -17,7 +17,6 @@ class UserRepo:
             email=data.email,
             hashed_password=data.password,
             referred_by=data.referred_by,
-            referrer=None
         )
 
         user = UserModels(
@@ -25,7 +24,6 @@ class UserRepo:
             email=convert.email,
             hashed_password=convert.hashed_password,
             referred_by=convert.referred_by,
-            referrer=None,
         )
 
         user.hashed_password = get_password_hash(user.hashed_password)

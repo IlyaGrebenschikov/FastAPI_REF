@@ -17,13 +17,8 @@ async_session = async_sessionmaker(engine, class_=AsyncSession)
 
 async def init_db():
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
+        # await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
-
-
-async def init_redis():
-    redis = await asyncredis.from_url(get_settings().redis.get_url, encoding="utf8", decode_responses=True)
-    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
 
 
 async def get_session() -> AsyncSession:

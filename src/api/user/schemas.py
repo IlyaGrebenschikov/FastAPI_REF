@@ -29,5 +29,4 @@ class UserInDB(BaseModel):
     name: str
     email: str
     hashed_password: str
-    referrer: Optional[str]
     referred_by: Optional[str]

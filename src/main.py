@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from src.database import init_db
-from src.database import init_redis
 
 from src.api.user import user_router
 from src.api.auth import auth_router
@@ -13,7 +12,6 @@ from src.api.test_pkg import test_pkg_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
-    await init_redis()
     yield
 
 

@@ -65,6 +65,10 @@ class RedisSettings(EnvSettings):
             REDIS_PORT=self.REDIS_PORT,
         )
 
+    @property
+    def get_timer(self) -> int:
+        return 500
+
 
 class Settings:
     
