@@ -63,3 +63,14 @@ class UserRepo:
         user = result.scalar()
 
         return user
+
+    async def try_get_user_by_id(self, user_id: int, db: AsyncSession) -> Optional[UserModels]:
+        stmt = (
+            select(UserModels).
+            filter(UserModels.id == user_id)
+        )
+
+        result = await db.execute(stmt)
+        user = result.scalar()
+
+        return user

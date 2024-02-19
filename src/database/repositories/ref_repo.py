@@ -3,7 +3,7 @@ from sqlalchemy import select
 
 from redis import Redis
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Any
 
 from src.api.user import UserModels
 
@@ -16,11 +16,11 @@ if TYPE_CHECKING:
 
 class RefRepo:
 
-    async def try_create_ref_email(self, ref: str, user: UserModels, timer: int, redis_client: Redis) -> bytes:
+    async def try_create_ref_email(self, ref: str, user: UserSchemasInDB, timer: int, redis_client: Redis) -> bytes:
         link = await redis_client.set(ref, user.email, ex=timer)
         return link
 
-    async def try_create_ref_by_link(self, user: UserModels, ref: str, timer: int, redis_client: Redis) -> bytes:
+    async def try_create_ref_by_link(self, user: UserSchemasInDB, ref: str, timer: int, redis_client: Redis) -> bytes:
         link = await redis_client.set(user.email, ref, ex=timer)
         return link
 
@@ -43,3 +43,15 @@ class RefRepo:
         data = await redis_client.delete(email)
 
         return data
+
+    async def get_all_refferals(self, user: UserSchemasInDB, limit: int, db: AsyncSession) -> Optional[UserModels | Any]:
+        stmt = (
+            select(UserModels).
+            filter(UserModels.referred_by == user.email).
+            limit(limit)
+        )
+
+        referrals = await db.execute(stmt)
+        result = referrals.scalars().all()
+
+        return result
