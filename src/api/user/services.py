@@ -1,27 +1,27 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
-from fastapi import HTTPException
-from fastapi import Depends
-from fastapi.security import OAuth2PasswordRequestForm
 
-from typing import Annotated
+from fastapi import HTTPException
+
+from redis import Redis
 
 from src.database.repositories import UserRepo
-from src.api.user import UserModels
 from src.api.user import UserSchemas
-from src.api.user import UserSchemasInDB
-
-from src.security import oauth2_scheme
-from src.security import pwd_context
+from src.database.repositories import RefRepo
 from src.security import verify_password
-from src.security import get_password_hash
+
 
 
 class UserServices:
     @staticmethod
-    async def create_user(data: UserSchemas, db: AsyncSession):
+    async def create_user(data: UserSchemas, db: AsyncSession, redis_client: Redis):
+        ref_repo = RefRepo()
+        user_repo = UserRepo()
+        test_data = await ref_repo.try_get_user_by_ref(data.referred_by, redis_client)
+        if not test_data:
+            raise HTTPException(400, 'referrer link has expired')
+        data.referred_by = test_data
+
         try:
-            user_repo = UserRepo()
             result = await user_repo.try_create_user(data, db)
             return result
         except Exception:
