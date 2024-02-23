@@ -2,10 +2,6 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from redis import asyncio as asyncredis
-from fastapi_cache import FastAPICache
-from fastapi_cache.backends.redis import RedisBackend
-
 from src.core import get_settings
 from src.database import Base
 

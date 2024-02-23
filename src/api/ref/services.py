@@ -1,13 +1,7 @@
-import json
-from fastapi import Depends
 from fastapi import status
 from fastapi import HTTPException
 
-from email_validator import validate_email, EmailSyntaxError
-
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from typing import Annotated
 
 from redis import Redis
 
@@ -15,7 +9,6 @@ from src.core import get_settings
 
 
 from src.api.user import UserSchemasInDB
-from src.api.auth import get_current_user
 
 from src.database.repositories import UserRepo
 from src.database.repositories import RefRepo

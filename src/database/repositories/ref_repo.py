@@ -3,15 +3,11 @@ from sqlalchemy import select
 
 from redis import Redis
 
-from typing import TYPE_CHECKING, Optional, Any
+from typing import Optional, Any
 
 from src.api.user import UserModels
 
 from src.api.user import UserSchemasInDB
-
-if TYPE_CHECKING:
-    from src.database.repositories import UserRepo
-
 
 
 class RefRepo:
