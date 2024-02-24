@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from pydantic import EmailStr
 from pydantic import field_validator
+from pydantic import Field
 
 from typing import Optional
 
@@ -9,7 +10,7 @@ class User(BaseModel):
     name: str
     email: EmailStr
     password: str
-    referred_by: Optional[str]
+    referred_by: Optional[str] = Field(default='string or null')
 
     @field_validator("password")
     def check_password(cls, value):

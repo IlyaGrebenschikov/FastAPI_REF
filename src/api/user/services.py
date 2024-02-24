@@ -16,10 +16,11 @@ class UserServices:
     async def create_user(data: UserSchemas, db: AsyncSession, redis_client: Redis):
         ref_repo = RefRepo()
         user_repo = UserRepo()
-        test_data = await ref_repo.try_get_user_by_ref(data.referred_by, redis_client)
-        if not test_data:
-            raise HTTPException(400, 'referrer link has expired')
-        data.referred_by = test_data
+        if data.referred_by is not None:
+            test_data = await ref_repo.try_get_user_by_ref(data.referred_by, redis_client)
+            if not test_data:
+                raise HTTPException(400, 'referrer link has expired')
+            data.referred_by = test_data
 
         try:
             result = await user_repo.try_create_user(data, db)
