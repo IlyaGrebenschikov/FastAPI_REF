@@ -1,7 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from fastapi import HTTPException
-
 from redis import Redis
 
 from src.database.repositories import UserRepo

@@ -1,13 +1,12 @@
-import uvicorn
-from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
-from src.database import init_db
+import uvicorn
+from fastapi import FastAPI
 
+from src.database import init_db
 from src.api.user import user_router
 from src.api.auth import auth_router
 from src.api.ref import ref_router
-from src.api.test_pkg import test_pkg_router
 
 
 @asynccontextmanager
@@ -22,14 +21,11 @@ app = FastAPI(
 )
 app.include_router(user_router)
 app.include_router(auth_router)
-app.include_router(test_pkg_router)
 app.include_router(ref_router)
 
 if __name__ == '__main__':
     uvicorn.run(
         app=app,
         host='127.0.0.1',
-        port=8080,
-        reload=True,
-        workers=15
+        port=8080
     )

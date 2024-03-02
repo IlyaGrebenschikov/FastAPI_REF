@@ -1,6 +1,8 @@
+from typing import Optional
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from typing import Optional
+
 from src.api.user import UserModels
 from src.api.user import UserSchemas
 from src.api.user import UserSchemasInDB

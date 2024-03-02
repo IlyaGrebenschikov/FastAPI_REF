@@ -1,15 +1,10 @@
 from fastapi import status
 from fastapi import HTTPException
-
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from redis import Redis
 
 from src.core import get_settings
-
-
 from src.api.user import UserSchemasInDB
-
 from src.database.repositories import UserRepo
 from src.database.repositories import RefRepo
 
@@ -71,8 +66,12 @@ async def get_all_referrals_by_userid(user_id: int, limit: int, current_user: Us
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Your email is not auth",
         )
-
     user = await user_repo.try_get_user_by_id(user_id, db)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='User not found'
+        )
     referrals = await ref_repo.get_all_refferals(user, limit, db)
 
     return referrals

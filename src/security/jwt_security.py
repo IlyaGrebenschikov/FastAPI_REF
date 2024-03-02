@@ -1,7 +1,9 @@
-import jwt
-from datetime import datetime, timedelta
-from src.core import get_settings
 from functools import lru_cache
+from datetime import datetime, timedelta
+
+import jwt
+
+from src.core import get_settings
 
 
 class Auth:

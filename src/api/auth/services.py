@@ -1,23 +1,18 @@
+from typing import Annotated
+
 from fastapi import HTTPException
 from fastapi import status
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.security import OAuth2PasswordRequestForm
-
-from typing import Annotated
-
-from src.api.auth.schemas import TokenData
-
 from jose import JWTError
 
 from src.database import get_session
-
+from src.api.auth.schemas import TokenData
 from src.api.user import UserModels
-
 from src.security import oauth2_scheme
 from src.security import get_auth_settings
 from src.security import verify_password
-
 from src.api.user import UserServices
 
 

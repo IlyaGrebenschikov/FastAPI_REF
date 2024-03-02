@@ -1,11 +1,9 @@
+from typing import Annotated
+
 from fastapi import Depends
 from fastapi import APIRouter
-
 from redis import Redis
-
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from typing import Annotated
 
 from src.api.user import UserSchemasInDB
 from src.api.auth import get_current_user
@@ -13,8 +11,8 @@ from src.api.ref import create_ref_link
 from src.api.ref import delete_ref_link
 from src.database import get_session
 from src.database import redis_get_session
-
 from src.api.ref import get_all_referrals_by_userid
+
 
 router = APIRouter(
     prefix='/referral',

@@ -1,9 +1,9 @@
+from typing import Optional
+
 from pydantic import BaseModel
 from pydantic import EmailStr
 from pydantic import field_validator
 from pydantic import Field
-
-from typing import Optional
 
 
 class User(BaseModel):
