@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.auth.schemas import Token
-from src.api.auth import authenticate_user
+from src.api.auth import service_authenticate_user
 from src.database import get_session
 
 
@@ -16,9 +16,9 @@ router = APIRouter(
 )
 
 
-@router.post('/token', response_model=Token)
+@router.post('/token', response_model=Token, operation_id='token')
 async def create_token(
         form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
         db: AsyncSession = Depends(get_session)
 ):
-    return await authenticate_user(form_data, db)
+    return await service_authenticate_user(form_data, db)

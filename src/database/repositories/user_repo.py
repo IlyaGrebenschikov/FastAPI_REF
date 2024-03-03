@@ -10,7 +10,6 @@ from src.security import get_password_hash
 
 
 class UserRepo:
-
     async def try_create_user(self, data: UserSchemas, db: AsyncSession) -> Optional[UserModels]:
         convert = UserSchemasInDB(
             name=data.name,
@@ -25,7 +24,6 @@ class UserRepo:
             hashed_password=convert.hashed_password,
             referred_by=convert.referred_by,
         )
-
         user.hashed_password = get_password_hash(user.hashed_password)
 
         db.add(user)
@@ -37,7 +35,6 @@ class UserRepo:
             'email': user.email,
             'referred_by': user.referred_by,
         }
-
         return response
 
     async def try_get_user_by_username(self, username: str, db: AsyncSession) -> Optional[UserModels]:
@@ -45,10 +42,8 @@ class UserRepo:
             select(UserModels).
             filter(UserModels.name == username)
         )
-
         result = await db.execute(stmt)
         user = result.scalar()
-
         return user
 
 
@@ -57,10 +52,8 @@ class UserRepo:
             select(UserModels).
             filter(UserModels.email == email)
         )
-
         result = await db.execute(stmt)
         user = result.scalar()
-
         return user
 
     async def try_get_user_by_id(self, user_id: int, db: AsyncSession) -> Optional[UserModels]:
@@ -68,8 +61,6 @@ class UserRepo:
             select(UserModels).
             filter(UserModels.id == user_id)
         )
-
         result = await db.execute(stmt)
         user = result.scalar()
-
         return user

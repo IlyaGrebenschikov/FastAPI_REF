@@ -5,7 +5,7 @@ from redis import Redis
 
 from src.database import get_session
 from src.database import redis_get_session
-from src.api.user import UserServices
+from src.api.user import service_create_user
 from src.api.user import UserSchemas
 
 
@@ -15,10 +15,10 @@ router = APIRouter(
 )
 
 
-@router.post('/create')
+@router.post('/create', operation_id='create')
 async def create_user(
         data: UserSchemas = None,
         db: AsyncSession = Depends(get_session),
         redis_client: Redis = Depends(redis_get_session)
 ):
-    return await UserServices.create_user(data, db, redis_client)
+    return await service_create_user(data, db, redis_client)

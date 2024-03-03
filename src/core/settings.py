@@ -8,7 +8,6 @@ from sqlalchemy import URL
 
 
 class EnvSettings(BaseSettings):
-    
     root_dir: DirectoryPath = Path(__file__).parent.parent.parent
     model_config = SettingsConfigDict(
         env_file=f'{root_dir}/.env',
@@ -28,13 +27,11 @@ class EnvSettings(BaseSettings):
 
 
 class SecretSettings:
-
     secret_key: str = secrets.token_hex(32)
     secret_algh: str = 'HS256'
 
 
 class DbSettings(EnvSettings):
-
     def create_url(self) -> URL:
         url_obj = URL.create(
             'postgresql+asyncpg',
@@ -58,7 +55,6 @@ class DbSettings(EnvSettings):
 
 
 class RedisSettings(EnvSettings):
-
     @property
     def get_url(self) -> str:
         return self.REDIS_URL.format(
@@ -72,7 +68,6 @@ class RedisSettings(EnvSettings):
 
 
 class Settings:
-    
     env: EnvSettings = EnvSettings()
     db: DbSettings = DbSettings()
     redis: RedisSettings = RedisSettings()

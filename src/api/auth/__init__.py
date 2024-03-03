@@ -1,10 +1,10 @@
-from src.api.auth.services import authenticate_user
+from src.api.auth.services import service_authenticate_user
 from src.api.auth.routers import router as auth_router
-from src.api.auth.services import get_current_user
+from src.api.auth.services import service_get_current_user
 
 
 __all__ = (
-    'authenticate_user',
+    'service_authenticate_user',
     'auth_router',
-    'get_current_user'
+    'service_get_current_user'
 )
