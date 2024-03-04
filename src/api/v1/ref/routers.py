@@ -5,13 +5,13 @@ from fastapi import APIRouter
 from redis import Redis
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.api.user import UserSchemasInDB
-from src.api.auth import service_get_current_user
-from src.api.ref import service_create_ref_link
-from src.api.ref import service_delete_ref_link
+from src.api.v1.user import UserSchemasInDB
+from src.api.v1.auth import service_get_current_user
+from src.api.v1.ref import service_create_ref_link
+from src.api.v1.ref import service_delete_ref_link
 from src.database import get_session
 from src.database import redis_get_session
-from src.api.ref import service_get_all_referrals_by_userid
+from src.api.v1.ref import service_get_all_referrals_by_userid
 
 
 router = APIRouter(

@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from redis import Redis
 
 from src.core import get_settings
-from src.api.user import UserSchemasInDB
+from src.api.v1.user import UserSchemasInDB
 from src.database.repositories import UserRepo
 from src.database.repositories import RefRepo
 

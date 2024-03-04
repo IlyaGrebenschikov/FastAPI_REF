@@ -5,8 +5,8 @@ from redis import Redis
 
 from src.database import get_session
 from src.database import redis_get_session
-from src.api.user import service_create_user
-from src.api.user import UserSchemas
+from src.api.v1.user import service_create_user
+from src.api.v1.user import UserSchemas
 
 
 router = APIRouter(

@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from redis import Redis
 
 from src.database.repositories import UserRepo
-from src.api.user import UserSchemas
+from src.api.v1.user import UserSchemas
 from src.database.repositories import RefRepo
 from src.security import verify_password
 

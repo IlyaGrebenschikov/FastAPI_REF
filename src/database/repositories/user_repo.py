@@ -3,9 +3,9 @@ from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from src.api.user import UserModels
-from src.api.user import UserSchemas
-from src.api.user import UserSchemasInDB
+from src.api.v1.user import UserModels
+from src.api.v1.user import UserSchemas
+from src.api.v1.user import UserSchemasInDB
 from src.security import get_password_hash
 
 

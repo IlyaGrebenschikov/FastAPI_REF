@@ -5,8 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from redis import Redis
 
-from src.api.user import UserModels
-from src.api.user import UserSchemasInDB
+from src.api.v1.user import UserModels
+from src.api.v1.user import UserSchemasInDB
 
 
 class RefRepo:

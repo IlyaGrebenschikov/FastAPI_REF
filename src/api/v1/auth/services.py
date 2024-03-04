@@ -8,14 +8,14 @@ from fastapi.security import OAuth2PasswordRequestForm
 from jose import JWTError
 
 from src.database import get_session
-from src.api.auth.schemas import TokenData
-from src.api.user import UserModels
+from src.api.v1.auth.schemas import TokenData
+from src.api.v1.user import UserModels
+from src.api.v1.user import service_get_user_username
+from src.api.v1.user import service_get_user_email
 from src.security import oauth2_scheme
 from src.security import create_jwt_token
 from src.security import verify_jwt_token
 from src.security import verify_password
-from src.api.user import service_get_user_username
-from src.api.user import service_get_user_email
 
 
 async def service_authenticate_user(form_data: OAuth2PasswordRequestForm, db: AsyncSession):
