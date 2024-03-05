@@ -1,34 +1,32 @@
-# FastAPI Referral application itegrated with Redis, PostgreSQL and SQLAlchemy
-About:
+# FastAPI Referral application integrated with Redis, PostgreSQL and SQLAlchemy
+# About:
 
-`Fully async application, user registration and authentication (JWT, Oauth 2.0).`
+* Fully async application, user registration and authentication (JWT, Oauth 2.0).
 
-`An authenticated user has the opportunity to create or delete his referral code, which is stored in the Redis storage.`
+* An authenticated user has the opportunity to create or delete his referral code, which is stored in the Redis storage.
 
-`Possibility of receiving a referral code by email address of the referrer.`
+* Possibility of receiving a referral code by email address of the referrer.
 
-`Possibility of registering using a referral code as a referral.`
+* Possibility of registering using a referral code as a referral.
 
-`Obtaining information about referrals by referrer id.`
+* Obtaining information about referrals by referrer id.
 
-`UI documentation (Swagger/ReDoc).`
+* UI documentation (Swagger/ReDoc).
 
-Setup:
+# Setup:
 
-`docker compose -f docker-compose.yaml up`
+1. `docker compose -f docker-compose.yaml up`
 
-Env-file:
+# Env-file:
 
-`You need to rename .env_example to .env and set your values.`
+You need to rename .env_example to .env and set your values.
+- `POSTGRES_HOST=host`
+- `POSTGRES_PORT=port`
+- `POSTGRES_USER=username`
+- `POSTGRES_PASSWORD=password`
+- `POSTGRES_DB=dbname`
+- `DB_URL='postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}'`
 
-`POSTGRES_HOST=host`
-
-`POSTGRES_PORT=port`
-
-`POSTGRES_USER=username`
-
-`POSTGRES_PASSWORD=password`
-
-`POSTGRES_DB=dbname`
-
-`DB_URL='postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}'`
+- `REDIS_HOST=host`
+- `REDIS_PORT=port`
+- `REDIS_URL="redis://{REDIS_HOST}:{REDIS_PORT}"`
