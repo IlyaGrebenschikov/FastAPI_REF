@@ -15,7 +15,7 @@
 
 # Setup:
 
-1. `docker compose -f docker-compose.yaml up`
+- `docker compose -f docker-compose.yaml up`
 
 # Env-file:
 
