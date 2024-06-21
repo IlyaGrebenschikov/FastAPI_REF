@@ -1,16 +1,19 @@
 import secrets
 from functools import lru_cache
 from pathlib import Path
+from typing import Final
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import DirectoryPath
 from sqlalchemy import URL
 
 
+ROOT_DIR: DirectoryPath = Path(__file__).resolve().parent.parent
+
+
 class EnvSettings(BaseSettings):
-    root_dir: DirectoryPath = Path(__file__).parent.parent.parent
     model_config = SettingsConfigDict(
-        env_file=f'{root_dir}/.env',
+        env_file=f'{ROOT_DIR}/.env',
         env_file_encoding='utf-8',
     )
 
@@ -29,6 +32,7 @@ class EnvSettings(BaseSettings):
 class SecretSettings:
     secret_key: str = secrets.token_hex(32)
     secret_algh: str = 'HS256'
+    jwt_expiration: Final[int] = 30
 
 
 class DbSettings(EnvSettings):
@@ -55,6 +59,10 @@ class DbSettings(EnvSettings):
 
 
 class RedisSettings(EnvSettings):
+    def __init__(self, **values: Any):
+        super().__init__(**values)
+        self.ex_timer: Final[int] = 1800
+
     @property
     def get_url(self) -> str:
         return self.REDIS_URL.format(
@@ -62,18 +70,17 @@ class RedisSettings(EnvSettings):
             REDIS_PORT=self.REDIS_PORT,
         )
 
-    @property
-    def get_timer(self) -> int:
-        return 500
 
-
-class Settings:
-    env: EnvSettings = EnvSettings()
-    db: DbSettings = DbSettings()
-    redis: RedisSettings = RedisSettings()
-    secret: SecretSettings = SecretSettings()
+@lru_cache(typed=True)
+def get_db_settings() -> DbSettings:
+    return DbSettings()
 
 
 @lru_cache(typed=True)
-def get_settings() -> Settings:
-    return Settings()
+def get_secret_settings() -> SecretSettings:
+    return SecretSettings()
+
+
+@lru_cache(typed=True)
+def get_redis_settings() -> RedisSettings:
+    return RedisSettings()
