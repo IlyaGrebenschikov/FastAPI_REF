@@ -1,23 +1,22 @@
-from fastapi import APIRouter
-from fastapi import Depends
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from redis import Redis
 
-from src.database import get_session
-from src.database import redis_get_session
-from src.api.v1.user import service_create_user
-from src.api.v1.user import UserSchemas
+from src.database.database import get_session
+from src.database.redis_connect import redis_get_session
+from src.api.v1.user.services import service_create_user
+from src.api.v1.user.schemas import UserSchema
 
 
-router = APIRouter(
+user_router = APIRouter(
     tags=['user'],
     prefix='/user',
 )
 
 
-@router.post('/create', operation_id='create')
+@user_router.post('/create', operation_id='create')
 async def create_user(
-        data: UserSchemas = None,
+        data: UserSchema = None,
         db: AsyncSession = Depends(get_session),
         redis_client: Redis = Depends(redis_get_session)
 ):

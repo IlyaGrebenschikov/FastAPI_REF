@@ -1,21 +1,16 @@
 from typing import Annotated
 
-from fastapi import HTTPException
-from fastapi import status
-from fastapi import Depends
+from fastapi import HTTPException, status, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.security import OAuth2PasswordRequestForm
 from jose import JWTError
 
-from src.database import get_session
-from src.api.v1.auth.schemas import TokenData
-from src.api.v1.user import UserModels
-from src.api.v1.user import service_get_user_username
-from src.api.v1.user import service_get_user_email
-from src.security import oauth2_scheme
-from src.security import create_jwt_token
-from src.security import verify_jwt_token
-from src.security import verify_password
+from src.database.database import get_session
+from src.api.v1.auth.schemas import TokenDataSchema
+from src.api.v1.user.models import UserModel
+from src.api.v1.user.services import service_get_user_username, service_get_user_email
+from src.security.auth_security import oauth2_scheme, verify_password
+from src.security.jwt_security import create_jwt_token, verify_jwt_token
 
 
 async def service_authenticate_user(form_data: OAuth2PasswordRequestForm, db: AsyncSession):
@@ -41,7 +36,7 @@ async def service_authenticate_user(form_data: OAuth2PasswordRequestForm, db: As
 async def service_get_current_user(
         token: Annotated[str, Depends(oauth2_scheme)],
         db: AsyncSession = Depends(get_session)
-) -> UserModels:
+) -> UserModel:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -52,7 +47,7 @@ async def service_get_current_user(
         email_token: str = payload.get("sub")
         if email_token is None:
             raise credentials_exception
-        token_data = TokenData(email=email_token)
+        token_data = TokenDataSchema(email=email_token)
     except JWTError:
         raise credentials_exception
 

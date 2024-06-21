@@ -1,7 +1,7 @@
 import secrets
 from functools import lru_cache
 from pathlib import Path
-from typing import Final
+from typing import Final, Any
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import DirectoryPath
@@ -59,9 +59,7 @@ class DbSettings(EnvSettings):
 
 
 class RedisSettings(EnvSettings):
-    def __init__(self, **values: Any):
-        super().__init__(**values)
-        self.ex_timer: Final[int] = 1800
+    EX_TIMER: Final[int] = 1800
 
     @property
     def get_url(self) -> str:

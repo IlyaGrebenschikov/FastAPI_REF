@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
-from src.api.v1.user import user_router
-from src.api.v1.auth import auth_router
-from src.api.v1.ref import ref_router
+from src.api.v1.user.routers import user_router
+from src.api.v1.auth.routers import auth_router
+from src.api.v1.ref.routers import ref_router
 
 
 def init_v1_router() -> APIRouter:

@@ -1,20 +1,19 @@
-from typing import Optional
-from typing import Any
+from typing import Optional, Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from redis import Redis
 
-from src.api.v1.user import UserModels
-from src.api.v1.user import UserSchemasInDB
+from src.api.v1.user.models import UserModel
+from src.api.v1.user.schemas import UserInDBSchema
 
 
 class RefRepo:
-    async def try_create_ref_email(self, ref: str, user: UserSchemasInDB, timer: int, redis_client: Redis) -> bytes:
+    async def try_create_ref_email(self, ref: str, user: UserInDBSchema, timer: int, redis_client: Redis) -> bytes:
         link = await redis_client.set(ref, user.email, ex=timer)
         return link
 
-    async def try_create_ref_by_link(self, user: UserSchemasInDB, ref: str, timer: int, redis_client: Redis) -> bytes:
+    async def try_create_ref_by_link(self, user: UserInDBSchema, ref: str, timer: int, redis_client: Redis) -> bytes:
         link = await redis_client.set(user.email, ref, ex=timer)
         return link
 
@@ -34,10 +33,10 @@ class RefRepo:
         data = await redis_client.delete(email)
         return data
 
-    async def get_all_refferals(self, user: UserSchemasInDB, limit: int, db: AsyncSession) -> Optional[UserModels | Any]:
+    async def get_all_refferals(self, user: UserInDBSchema, limit: int, db: AsyncSession) -> Optional[UserModel | Any]:
         stmt = (
-            select(UserModels).
-            filter(UserModels.referred_by == user.email).
+            select(UserModel).
+            filter(UserModel.referred_by == user.email).
             limit(limit)
         )
         referrals = await db.execute(stmt)

@@ -1,16 +1,20 @@
-from fastapi import status
-from fastapi import HTTPException
+from fastapi import status, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from redis import Redis
 
-from src.core import get_settings
-from src.api.v1.user import UserSchemasInDB
-from src.database.repositories import UserRepo
-from src.database.repositories import RefRepo
+from src.core.settings import get_redis_settings
+from src.api.v1.user.schemas import UserInDBSchema
+from src.database.repositories.user_repo import UserRepo
+from src.database.repositories.ref_repo import RefRepo
 
 
-async def service_create_ref_link(ref: str, current_user: UserSchemasInDB, db: AsyncSession, redis_client: Redis) -> dict:
-    timer = get_settings().redis.get_timer
+async def service_create_ref_link(
+        ref: str,
+        current_user: UserInDBSchema,
+        db: AsyncSession,
+        redis_client: Redis
+) -> dict:
+    timer = get_redis_settings().EX_TIMER
     user_repo = UserRepo()
     ref_repo = RefRepo()
     user = await user_repo.try_get_user_by_email(current_user.email, db)
@@ -34,7 +38,12 @@ async def service_create_ref_link(ref: str, current_user: UserSchemasInDB, db: A
     }
 
 
-async def service_delete_ref_link(ref: str, current_user: UserSchemasInDB, db: AsyncSession, redis_client: Redis) -> dict:
+async def service_delete_ref_link(
+        ref: str,
+        current_user: UserInDBSchema,
+        db: AsyncSession,
+        redis_client: Redis
+) -> dict:
     user_repo = UserRepo()
     ref_repo = RefRepo()
     user = await user_repo.try_get_user_by_email(current_user.email, db)
@@ -53,7 +62,12 @@ async def service_delete_ref_link(ref: str, current_user: UserSchemasInDB, db: A
     }
 
 
-async def service_get_all_referrals_by_userid(user_id: int, limit: int, current_user: UserSchemasInDB, db: AsyncSession):
+async def service_get_all_referrals_by_userid(
+        user_id: int,
+        limit: int,
+        current_user: UserInDBSchema,
+        db: AsyncSession
+):
     user_repo = UserRepo()
     ref_repo = RefRepo()
     test_user = await user_repo.try_get_user_by_email(current_user.email, db)
@@ -74,6 +88,3 @@ async def service_get_all_referrals_by_userid(user_id: int, limit: int, current_
 
     referrals = await ref_repo.get_all_refferals(user, limit, db)
     return referrals
-
-
-# async def add_ref_by_link

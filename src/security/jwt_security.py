@@ -1,15 +1,14 @@
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 import jwt
 
-from src.core import get_settings
+from src.core.settings import get_secret_settings
 
 
 def create_jwt_token(data: dict):
-    expiration = datetime.utcnow() + timedelta(minutes=30)
+    expiration = datetime.utcnow() + timedelta(minutes=get_secret_settings().jwt_expiration)
     data.update({"exp": expiration})
-    token = jwt.encode(data, get_settings().secret.secret_key, algorithm=get_settings().secret.secret_algh)
+    token = jwt.encode(data, get_secret_settings().secret_key, algorithm=get_secret_settings().secret_algh)
     return token
 
 
@@ -17,8 +16,8 @@ def verify_jwt_token(token: str):
     try:
         decoded_data = jwt.decode(
             token,
-            get_settings().secret.secret_key,
-            algorithms=[get_settings().secret.secret_algh]
+            get_secret_settings().secret_key,
+            algorithms=[get_secret_settings().secret_algh]
         )
         return decoded_data
     except jwt.PyJWTError:

@@ -1,12 +1,14 @@
 from typing import Optional
 
-from pydantic import BaseModel
-from pydantic import EmailStr
-from pydantic import field_validator
-from pydantic import Field
+from pydantic import (
+    BaseModel,
+    EmailStr,
+    field_validator,
+    Field
+)
 
 
-class User(BaseModel):
+class UserSchema(BaseModel):
     name: str
     email: EmailStr
     password: str
@@ -26,7 +28,7 @@ class User(BaseModel):
         return value
 
 
-class UserInDB(BaseModel):
+class UserInDBSchema(BaseModel):
     name: str
     email: str
     hashed_password: str

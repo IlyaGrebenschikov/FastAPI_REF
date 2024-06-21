@@ -3,22 +3,21 @@ from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from src.api.v1.user import UserModels
-from src.api.v1.user import UserSchemas
-from src.api.v1.user import UserSchemasInDB
-from src.security import get_password_hash
+from src.api.v1.user.models import UserModel
+from src.api.v1.user.schemas import UserSchema, UserInDBSchema
+from src.security.auth_security import get_password_hash
 
 
 class UserRepo:
-    async def try_create_user(self, data: UserSchemas, db: AsyncSession) -> Optional[UserModels]:
-        convert = UserSchemasInDB(
+    async def try_create_user(self, data: UserSchema, db: AsyncSession) -> Optional[UserModel]:
+        convert = UserInDBSchema(
             name=data.name,
             email=data.email,
             hashed_password=data.password,
             referred_by=data.referred_by,
         )
 
-        user = UserModels(
+        user = UserModel(
             name=convert.name,
             email=convert.email,
             hashed_password=convert.hashed_password,
@@ -35,32 +34,35 @@ class UserRepo:
             'email': user.email,
             'referred_by': user.referred_by,
         }
+
         return response
 
-    async def try_get_user_by_username(self, username: str, db: AsyncSession) -> Optional[UserModels]:
+    async def try_get_user_by_username(self, username: str, db: AsyncSession) -> Optional[UserModel]:
         stmt = (
-            select(UserModels).
-            filter(UserModels.name == username)
+            select(UserModel).
+            filter(UserModel.name == username)
         )
         result = await db.execute(stmt)
         user = result.scalar()
+
         return user
 
-
-    async def try_get_user_by_email(self, email: str, db: AsyncSession) -> Optional[UserModels]:
+    async def try_get_user_by_email(self, email: str, db: AsyncSession) -> Optional[UserModel]:
         stmt = (
-            select(UserModels).
-            filter(UserModels.email == email)
+            select(UserModel).
+            filter(UserModel.email == email)
         )
         result = await db.execute(stmt)
         user = result.scalar()
+
         return user
 
-    async def try_get_user_by_id(self, user_id: int, db: AsyncSession) -> Optional[UserModels]:
+    async def try_get_user_by_id(self, user_id: int, db: AsyncSession) -> Optional[UserModel]:
         stmt = (
-            select(UserModels).
-            filter(UserModels.id == user_id)
+            select(UserModel).
+            filter(UserModel.id == user_id)
         )
         result = await db.execute(stmt)
         user = result.scalar()
+
         return user
