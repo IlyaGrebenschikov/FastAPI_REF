@@ -1,17 +1,20 @@
 import uvicorn
 from fastapi import FastAPI
 
-from src.api.v1 import v1_router
+from src.api.v1 import init_v1_router
 
 
-app = FastAPI(
-    title='Refferal APP',
-)
-app.include_router(v1_router)
-
-if __name__ == '__main__':
+def main() -> None:
+    app = FastAPI(
+        title='Refferal APP',
+    )
+    app.include_router(init_v1_router())
     uvicorn.run(
         app=app,
-        host='127.0.0.1',
-        port=8080
+        host='0.0.0.0',
+        port=8000
     )
+
+
+if __name__ == '__main__':
+    main()
